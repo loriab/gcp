@@ -40,8 +40,7 @@ if [ "$(uname)" == "Linux" ]; then
         -DCMAKE_INSTALL_PREFIX=${PREFIX} \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_Fortran_COMPILER=ifort \
-        -DCMAKE_Fortran_FLAGS="${ALLOPTS}" \
-        -DENABLE_XHOST=OFF
+        -DCMAKE_Fortran_FLAGS="${ALLOPTS}"
 fi
 
 # build and install
