@@ -184,9 +184,6 @@ jobs:
       if: steps.cache-install.outputs.cache-hit != 'true'
       run: devtools/oneapi-ci/install_macos.sh $MACOS_HPCKIT_URL $MACOS_FORTRAN_COMPONENTS
 
-    - name: build
-      run: scripts/build_macos.sh fortran
-
     - name: Create Conda Environment
       uses: conda-incubator/setup-miniconda@v2
       with:
