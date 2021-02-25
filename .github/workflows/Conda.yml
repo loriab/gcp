@@ -243,18 +243,18 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: cache install
+    - name: "OneAPI: cache install"
       id: cache-install
       uses: actions/cache@v2
       with:
         path: C:\Program Files (x86)\Intel\oneAPI\compiler
         key: install-${{ env.WINDOWS_HPCKIT_URL }}-${{ env.WINDOWS_FORTRAN_COMPONENTS }}-compiler-${{ hashFiles('**/devtools/oneapi-ci/cache_exclude_windows.sh') }}
 
-    - name: OneAPI: install
+    - name: "OneAPI: install"
       if: steps.cache-install.outputs.cache-hit != 'true'
       run: devtools/oneapi-ci/install_windows.bat $WINDOWS_HPCKIT_URL $WINDOWS_FORTRAN_COMPONENTS
 
-    - name: OneAPI: exclude unused files from cache
+    - name: "OneAPI: exclude unused files from cache"
       if: steps.cache-install.outputs.cache-hit != 'true'
       shell: bash
       run: devtools/oneapi-ci/cache_exclude_windows.sh
@@ -316,13 +316,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: OneAPI: setup apt repo
+    - name: "OneAPI: setup apt repo"
       run: devtools/oneapi-ci/setup_apt_repo_linux.sh
 
-    - name: OneAPI: collect versioned dependencies of apt packages
+    - name: "OneAPI: collect versioned dependencies of apt packages"
       run: devtools/oneapi-ci/apt_depends.sh $LINUX_FORTRAN_COMPONENTS | tee depends.txt
 
-    - name: OneAPI: cache install
+    - name: "OneAPI: cache install"
       id: cache-install
       uses: actions/cache@v2
       with:
@@ -330,11 +330,11 @@ jobs:
           /opt/intel/oneapi/compiler
         key: install-${{ env.LINUX_FORTRAN_COMPONENTS }}-${{ hashFiles('**/depends.txt') }}-compiler-${{ hashFiles('**/devtools/oneapi-ci/cache_exclude_linux.sh') }}
 
-    - name: OneAPI: install
+    - name: "OneAPI: install"
       if: steps.cache-install.outputs.cache-hit != 'true'
       run: devtools/oneapi-ci/install_linux_apt.sh $LINUX_FORTRAN_COMPONENTS
 
-    - name: OneAPI: exclude unused files from cache
+    - name: "OneAPI: exclude unused files from cache"
       if: steps.cache-install.outputs.cache-hit != 'true'
       run: devtools/oneapi-ci/cache_exclude_linux.sh
 
