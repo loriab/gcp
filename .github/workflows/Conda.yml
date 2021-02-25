@@ -243,7 +243,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: OneAPI: cache install
+    - name: cache install
       id: cache-install
       uses: actions/cache@v2
       with:
