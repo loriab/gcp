@@ -1,20 +1,14 @@
 
 if [ "$(uname)" == "Darwin" ]; then
-    OPTS="-msse4.1"
 
+    # load Intel compilers
+    source /opt/intel/oneapi/setvars.sh
+
+    # Intel atop conda Clang
+    ALLOPTS="-clang-name=${CLANG} -msse4.1 -axCORE-AVX2"
 
     # for FortranCInterface
-    CMAKE_Fortran_FLAGS="${FFLAGS} -L${CONDA_BUILD_SYSROOT}/usr/lib/system/ ${OPTS} -O0"
-
-    # configure
-    ${BUILD_PREFIX}/bin/cmake \
-        -H${SRC_DIR} \
-        -Bbuild \
-        -DCMAKE_INSTALL_PREFIX=${PREFIX} \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_Fortran_COMPILER=${GFORTRAN} \
-        -DCMAKE_Fortran_FLAGS="${CMAKE_Fortran_FLAGS}" \
-        -DENABLE_XHOST=OFF
+    #CMAKE_Fortran_FLAGS="${FFLAGS} -L${CONDA_BUILD_SYSROOT}/usr/lib/system/ ${OPTS} -O0"
 fi
 
 
@@ -31,20 +25,21 @@ if [ "$(uname)" == "Linux" ]; then
 
     # link against conda GCC
     ALLOPTS="-gnu-prefix=${HOST}- ${OPTS}"
-
-    # configure
-    ${BUILD_PREFIX}/bin/cmake \
-        -S${SRC_DIR} \
-        -Bbuild \
-        -GNinja \
-        -DCMAKE_INSTALL_PREFIX=${PREFIX} \
-        -DCMAKE_BUILD_TYPE=Release \
-        -DCMAKE_Fortran_COMPILER=ifort \
-        -DCMAKE_Fortran_FLAGS="${ALLOPTS}"
 fi
 
+
+# configure
+${BUILD_PREFIX}/bin/cmake \
+    -S${SRC_DIR} \
+    -Bbuild \
+    -GNinja \
+    -DCMAKE_INSTALL_PREFIX=${PREFIX} \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_Fortran_COMPILER=ifort \
+    -DCMAKE_Fortran_FLAGS="${ALLOPTS}"
+
 # build and install
-cmake --build build --target install -j${CPU_COUNT}
+cmake --build build --target install -j${CPU_COUNT} --verbose
 
 # test
 # no independent tests

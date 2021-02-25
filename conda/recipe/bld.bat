@@ -24,6 +24,9 @@ REM build and install
 cmake --build build ^
       --config Release ^
       --target install ^
-      -- -j %CPU_COUNT%
+      -- -j %CPU_COUNT% ^
+      --verbose
 if errorlevel 1 exit 1
 
+REM test
+REM no independent tests

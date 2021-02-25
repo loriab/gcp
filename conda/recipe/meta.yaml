@@ -12,18 +12,17 @@ build:
   number: 0
   binary_relocation: true
   ignore_run_exports:
-    # unused libraries
     - libgcc-ng                                            # [linux]
     - libgfortran-ng                                       # [linux]
 
 requirements:
   build:
-    - {{ compiler('fortran') }}                             # [not win]
-    #    - fortran_rt   # [win]
+    - {{ compiler('fortran') }}                            # [not win]
     - cmake >=3.3
     - ninja
-    #run:
-    #    - fortran_rt   # [win]
+  # below averted through \static. available from `-c intel`
+  # run:
+    # - fortran_rt
 
 test:
   commands:
@@ -41,8 +40,7 @@ about:
   home: https://www.chemie.uni-bonn.de/pctc/mulliken-center/software/gcp
   license: GPL-3.0-or-later
   license_family: GPL
-#  license_file:
-#    - COPYING
+  license_file: COPYING
   summary: Geometrical Counter-Poise Correction
   dev_url: https://github.com/grimme-lab/gcp
   summary: "S. Grimme's dispersion correction for DFT, Hartree--Fock, and semi-empirical quantum chemical methods"
