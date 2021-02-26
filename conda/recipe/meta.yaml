@@ -1,0 +1,48 @@
+{% set name = "gcp" %}
+{% set version = "2.0.2" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  path: ../..
+
+build:
+  number: 0
+  binary_relocation: true
+  ignore_run_exports:
+    - libgcc-ng                                            # [linux]
+    - libgfortran-ng                                       # [linux]
+
+requirements:
+  build:
+    - {{ compiler('fortran') }}                            # [not win]
+    - cmake >=3.3
+    - ninja
+  # below averted through \static. available from `-c intel`
+  # run:
+    # - fortran_rt
+
+test:
+  commands:
+    # Verify executable
+    - test -f $PREFIX/bin/gcp                              # [not win]
+    - if not exist %PREFIX%\\Library\\bin\\gcp.exe exit 1  # [win]
+    - gcp -h
+    # Inspect linkage
+    - ldd -r -u $PREFIX/bin/gcp                            # [linux]
+    - otool -L $PREFIX/bin/gcp                             # [osx]
+    - conda inspect linkages --show-files --groupby=dependency gcp  # [unix]
+    - conda inspect objects -p $PREFIX $PKG_NAME           # [osx]
+
+about:
+  home: https://www.chemie.uni-bonn.de/pctc/mulliken-center/software/gcp
+  license: GPL-3.0-or-later
+  license_family: GPL
+  license_file: COPYING
+  summary: Geometrical Counter-Poise Correction
+  dev_url: https://github.com/grimme-lab/gcp
+  summary: "S. Grimme's dispersion correction for DFT, Hartree--Fock, and semi-empirical quantum chemical methods"
+  # description: >
+
