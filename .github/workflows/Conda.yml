@@ -21,8 +21,6 @@ env:
 
 jobs:
 
-#            -DCMAKE_Fortran_FLAGS="-gnu-prefix=${CONDA_PREFIX}/bin/x86_64-conda_cos6-linux-gnu- --sysroot=${CONDA_PREFIX}/x86_64-conda_cos6-linux-gnu/sysroot"
-
   windows_ifort:
     runs-on: windows-latest
     name: Windows Intel
@@ -137,6 +135,10 @@ jobs:
         conda install anaconda-client
         conda info
         conda list
+
+      # Source Compilers is for reference. happens for real w/i conda recipe
+    - name: Source Compilers
+      run: |
         LATEST_VERSION=$(ls -1 /opt/intel/oneapi/compiler/ | grep -v latest | sort | tail -1)
         source /opt/intel/oneapi/compiler/"$LATEST_VERSION"/env/vars.sh
         which conda conda-build python ifort
@@ -198,6 +200,10 @@ jobs:
         conda install anaconda-client
         conda info
         conda list
+
+      # Source Compilers is for reference. happens for real w/i conda recipe
+    - name: Source Compilers
+      run: |
         source /opt/intel/oneapi/setvars.sh
         which conda conda-build python ifort
 
@@ -224,3 +230,6 @@ jobs:
 #        activate-environment: test
 #        environment-file: devtools/conda-envs/base-defaults.yaml
 #        python-version: ${{ matrix.cfg.python-version }}
+
+# the Linux line for Intel-atop-Conda-GCC, in case building outside c-b
+#    -DCMAKE_Fortran_FLAGS="-gnu-prefix=${CONDA_PREFIX}/bin/x86_64-conda_cos6-linux-gnu- --sysroot=${CONDA_PREFIX}/x86_64-conda_cos6-linux-gnu/sysroot"
